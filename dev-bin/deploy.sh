@@ -2,7 +2,7 @@
 echo "Is Production: $1"
 echo "hash: $2"
 
-ENV="beta"
+ENV="stage"
 if [ "$1" = "true" ]; then
   ENV="prod"
 fi

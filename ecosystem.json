@@ -12,12 +12,12 @@
      }
     },
     {
-      "name": "GameServer_beta",
+      "name": "GameServer_stage",
       "script": "npm start",
       "error_file": "../logs/app.err.log",
       "out_file": "../logs/app.out.log",
       "exec_mode": "fork_mode",
-      "env_beta": {
+      "env_stage": {
          "NODE_ENV": "production",
          "GAME_SERVER_PORT": 3250
       }
