@@ -1,13 +1,8 @@
-import express, { Application, Request, Response } from 'express';
 import config from '../config/config';
-import pkg from '../package.json';
+import App from './app';
 
-const app: Application = express();
-
-app.get('/', (req: Request, res: Response) => {
-  res.status(200).json({ version: pkg.version });
-});
+const app = App(config);
 
 app.listen(config.serverPort, () => {
-  console.log('Server is running...');
+  console.log('Server started');
 });
