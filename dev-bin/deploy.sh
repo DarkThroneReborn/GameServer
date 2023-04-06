@@ -12,12 +12,18 @@ if test -f "$FILE"; then
   echo "$FILE exists."
 fi
 
+DB_ENV="staging"
+if [[ "$ENV" == "prod" ]]; then
+  DB_ENV="production"
+fi
+
 # Save private key to a temporary file
 echo "$SSH_PRIVATE_KEY" > id_rsa
 chmod 400 id_rsa
 
 ssh -tt -i id_rsa $SSH_USERNAME@$SSH_HOST << EOF
   source ~/.bashrc
+  source Code/DarkThrone/.envrc
   mkdir -p Code/DarkThrone/$ENV/GameServer/builds
   mv builds/$FILE Code/DarkThrone/$ENV/GameServer/builds
   cd Code/DarkThrone/$ENV/GameServer/builds
@@ -26,6 +32,7 @@ ssh -tt -i id_rsa $SSH_USERNAME@$SSH_HOST << EOF
   rm $FILE
   cd $2
   npm install --omit=dev
+  npx knex migrate:latest --env $DB_ENV
   cd ../../
   rm current
   ln -s builds/$2 current

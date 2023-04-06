@@ -3,13 +3,15 @@ import { Config } from '../config/config';
 import router from './router';
 import corsMiddleware from './middleware/cors';
 import { ulid } from 'ulid';
+import DaoFactory from './daoFactory';
 
 export interface Context {
   requestId: string;
   config: Config;
+  daoFactory: DaoFactory;
 }
 
-export default (config: Config): Express => {
+export default (config: Config, daoFactory: DaoFactory): Express => {
   const app = express();
 
   app.use((req, res, next) => {
@@ -18,6 +20,7 @@ export default (config: Config): Express => {
     req.ctx = {
       requestId: requestId,
       config: config,
+      daoFactory: daoFactory
     }
 
     res.setHeader('X-Request-Id', requestId);

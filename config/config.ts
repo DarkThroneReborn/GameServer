@@ -20,4 +20,12 @@ if (process.env.NODE_ENV === 'development') {
   ];
 }
 
+if (process.env.NODE_ENV === 'staging') {
+  config.environment = 'staging';
+}
+
+if (process.env.NODE_ENV === 'production') {
+  config.environment = 'production';
+}
+
 export default config;
