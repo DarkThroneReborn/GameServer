@@ -4,14 +4,16 @@ import router from './router';
 import corsMiddleware from './middleware/cors';
 import { ulid } from 'ulid';
 import DaoFactory from './daoFactory';
+import ModelFactory from './modelFactory';
 
 export interface Context {
   requestId: string;
   config: Config;
   daoFactory: DaoFactory;
+  modelFactory: ModelFactory;
 }
 
-export default (config: Config, daoFactory: DaoFactory): Express => {
+export default (config: Config, daoFactory: DaoFactory, modelFactory: ModelFactory): Express => {
   const app = express();
 
   app.use((req, res, next) => {
@@ -20,7 +22,8 @@ export default (config: Config, daoFactory: DaoFactory): Express => {
     req.ctx = {
       requestId: requestId,
       config: config,
-      daoFactory: daoFactory
+      daoFactory: daoFactory,
+      modelFactory: modelFactory
     }
 
     res.setHeader('X-Request-Id', requestId);
