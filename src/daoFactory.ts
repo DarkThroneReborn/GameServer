@@ -1,10 +1,15 @@
 import { Knex } from 'knex';
+import UserDao from './daos/user';
 
 export default class DaoFactory {
   private database: Knex;
 
+  public user: UserDao;
+
   constructor(database: Knex) {
     this.database = database;
+
+    this.user = new UserDao(this.database);
   }
 
   async testConnection() {
