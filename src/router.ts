@@ -3,6 +3,7 @@ import { healthcheck } from './controllers/healthcheck';
 import { fetchUserByExternalId } from './controllers/user';
 
 import AuthController from './controllers/auth';
+import errors, { prepareErrorResponse } from './errors';
 
 const router = Router();
 
@@ -10,17 +11,13 @@ router.get('/healthcheck', healthcheck);
 
 router.get('/user/:externalId', fetchUserByExternalId);
 
+router.post('/auth/login', AuthController.login);
+
 const authenticatedRouter = Router();
 authenticatedRouter.use((req: Request, res, next) => {
   if (!req.ctx.user) {
-    res.status(401).json({
-      errors: [
-        {
-          title: 'Unauthorized',
-          detail: 'Your request is not authorized to access this resource.',
-        },
-      ],
-    });
+    const errorResponse = prepareErrorResponse([errors.A1002]);
+    res.status(errorResponse.httpStatus).json(errorResponse.body);
     return;
   }
 

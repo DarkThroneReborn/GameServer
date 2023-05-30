@@ -5,6 +5,7 @@ import app from '../../../src/app';
 import { Config } from '../../../config/environment';
 import DaoFactory from '../../../src/daoFactory';
 import UserModel from '../../../src/models/user';
+import errors, { appErrorToResponseError } from '../../../src/errors';
 
 describe('GET Current User', () => {
   it('should respond with a 401 if the user is not authenticated', async () => {
@@ -16,12 +17,7 @@ describe('GET Current User', () => {
 
     expect(response.status).toEqual(401);
     expect(response.body).toEqual({
-      errors: [
-        {
-          title: 'Unauthorized',
-          detail: 'Your request is not authorized to access this resource.',
-        },
-      ],
+      errors: [appErrorToResponseError(errors.A1002)],
     });
   });
   it('should respond with the current user if the request is authenticated', async () => {

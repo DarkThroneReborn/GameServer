@@ -30,4 +30,13 @@ export default class UserDao {
 
     return user || null;
   }
+
+  async fetchUserByEmail(email: string): Promise<UserRow | null> {
+    const user = await this.database<UserRow>('users')
+      .select()
+      .where({ email })
+      .first();
+
+    return user || null;
+  }
 }

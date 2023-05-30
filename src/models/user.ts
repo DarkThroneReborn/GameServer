@@ -1,7 +1,8 @@
+import * as jsonwebtoken from 'jsonwebtoken';
+import bcrypt from 'bcrypt';
+
 import { Context } from '../app';
 import { UserRow } from '../daos/user';
-
-import * as jsonwebtoken from 'jsonwebtoken';
 
 type TokenData = {
   id: string;
@@ -40,6 +41,17 @@ export default class UserModel {
     this.goldPerTurn = userData.gold_per_turn;
   }
 
+  async comparePassword(password: string): Promise<boolean> {
+    return bcrypt.compare(password, this.passwordHash);
+  }
+
+  async generateAuthToken(): Promise<string> {
+    const data: TokenData = {
+      id: this.externalId,
+    };
+    return jsonwebtoken.sign(data, this.ctx.config.jwtSecret);
+  }
+
   static async fetchUserByExternalId(
     ctx: Context,
     externalId: string
@@ -48,13 +60,6 @@ export default class UserModel {
     if (!user) return null;
 
     return new UserModel(ctx, user);
-  }
-
-  async generateAuthToken(): Promise<string> {
-    const data: TokenData = {
-      id: this.externalId,
-    };
-    return jsonwebtoken.sign(data, this.ctx.config.jwtSecret);
   }
 
   static async fetchByToken(
@@ -73,5 +78,15 @@ export default class UserModel {
     if (!userData) return null;
 
     return new UserModel(ctx, userData);
+  }
+
+  static async fetchUserByEmail(
+    ctx: Context,
+    email: string
+  ): Promise<UserModel | null> {
+    const user = await ctx.daoFactory.user.fetchUserByEmail(email);
+    if (!user) return null;
+
+    return new UserModel(ctx, user);
   }
 }

@@ -1,4 +1,6 @@
 import express, { Express } from 'express';
+import bodyParser from 'body-parser';
+
 import { Config } from '../config/environment';
 import router from './router';
 import corsMiddleware from './middleware/cors';
@@ -17,6 +19,8 @@ export interface Context {
 
 export default (config: Config, daoFactory: DaoFactory): Express => {
   const app = express();
+
+  app.use(bodyParser.json());
 
   app.use((req, res, next) => {
     const requestId = ulid();
