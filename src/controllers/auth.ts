@@ -47,6 +47,63 @@ export default {
     });
   },
 
+  async createAccount(req: Request, res: Response) {
+    const fieldValidationErrors: AppError[] = [
+      { attr: 'username', error: errors.A1006 },
+      { attr: 'email', error: errors.A1000 },
+      { attr: 'password', error: errors.A1001 },
+    ]
+      .map((check) => {
+        if (!req.body[check.attr]) {
+          return check.error;
+        }
+        return null;
+      })
+      .filter((error) => error !== null) as AppError[];
+
+    if (fieldValidationErrors.length > 0) {
+      const errorResponse = prepareErrorResponse(fieldValidationErrors);
+      res.status(errorResponse.httpStatus).json(errorResponse.body);
+      return;
+    }
+
+    const { username, email, password } = req.body;
+
+    const userByEmail = await req.ctx.modelFactory.user.fetchUserByEmail(
+      req.ctx,
+      email
+    );
+    if (userByEmail) {
+      const errorResponse = prepareErrorResponse([errors.A1005]);
+      res.status(errorResponse.httpStatus).json(errorResponse.body);
+      return;
+    }
+
+    const userByUsername = await req.ctx.modelFactory.user.fetchUserByUsername(
+      req.ctx,
+      username
+    );
+    if (userByUsername) {
+      const errorResponse = prepareErrorResponse([errors.A1007]);
+      res.status(errorResponse.httpStatus).json(errorResponse.body);
+      return;
+    }
+
+    const newUser = await req.ctx.modelFactory.user.createUser(
+      req.ctx,
+      username,
+      email,
+      password
+    );
+
+    const token = await newUser.generateAuthToken();
+
+    res.status(201).json({
+      id: newUser.externalId,
+      token: token,
+    });
+  },
+
   async getCurrentUser(req: Request, res: Response) {
     // This is a protected route, so we can assume that the user is authenticated.
     if (!req.ctx.user) return;

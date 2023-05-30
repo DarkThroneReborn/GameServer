@@ -50,6 +50,25 @@ const errors: { [k: string]: AppError } = {
     title: 'Email or Password Incorrect',
     detail: 'The email or password you entered is incorrect.',
   },
+  // The email address is already in use.
+  A1005: {
+    code: 'A1005',
+    httpStatus: 409,
+    title: 'Email Already Exists',
+    detail: 'The email address you entered is already in use.',
+  },
+  A1006: {
+    code: 'A1006',
+    httpStatus: 400,
+    title: 'Missing Attribute',
+    detail: 'username is a required attribute',
+  },
+  A1007: {
+    code: 'A1007',
+    httpStatus: 409,
+    title: 'Username Already Exists',
+    detail: 'The username you entered is already in use.',
+  },
 };
 
 export default errors;

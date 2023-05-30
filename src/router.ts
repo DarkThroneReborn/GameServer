@@ -12,6 +12,7 @@ router.get('/healthcheck', healthcheck);
 router.get('/user/:externalId', fetchUserByExternalId);
 
 router.post('/auth/login', AuthController.login);
+router.post('/auth/createAccount', AuthController.createAccount);
 
 const authenticatedRouter = Router();
 authenticatedRouter.use((req: Request, res, next) => {

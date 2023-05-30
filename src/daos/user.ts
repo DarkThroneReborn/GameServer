@@ -1,4 +1,5 @@
 import { Knex } from 'knex';
+import { ulid } from 'ulid';
 
 export type UserRow = {
   id: number;
@@ -38,5 +39,31 @@ export default class UserDao {
       .first();
 
     return user || null;
+  }
+
+  async fetchUserByUsername(username: string): Promise<UserRow | null> {
+    const user = await this.database<UserRow>('users')
+      .select()
+      .where({ username })
+      .first();
+
+    return user || null;
+  }
+
+  async createUser(
+    username: string,
+    passwordHash: string,
+    email: string
+  ): Promise<UserRow> {
+    const user = await this.database<UserRow>('users')
+      .insert({
+        external_id: ulid(),
+        username,
+        password_hash: passwordHash,
+        email,
+      })
+      .returning('*');
+
+    return user[0];
   }
 }
