@@ -5,6 +5,7 @@ export interface Config {
   environment: 'development' | 'staging' | 'production';
   allowedOrigins: string[];
   version: string;
+  jwtSecret: string;
 }
 
 const config: Config = {
@@ -12,6 +13,7 @@ const config: Config = {
   environment: 'development',
   allowedOrigins: [],
   version: pkg.version,
+  jwtSecret: process.env.GAME_SERVER_JWT_SECRET || '01H1Q4QCEBX55VZMXNE1HE9AY4',
 };
 
 if (process.env.NODE_ENV === 'development') {

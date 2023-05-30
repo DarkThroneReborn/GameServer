@@ -63,10 +63,21 @@ describe('Model: User', () => {
       expect(user?.externalId).toEqual('abc123');
     });
   });
+  describe('generateAuthToken', () => {
+    it('should return a JWT', async () => {
+      const ctx = _mockContext(mockUserData);
+      const user = new UserModel(ctx, mockUserData);
+      const token = await user.generateAuthToken();
+      expect(token).not.toBeNull();
+    });
+  });
 });
 
 const _mockContext = (user: UserRow | null): Context => {
   return {
+    config: {
+      jwtSecret: 'test',
+    },
     daoFactory: {
       user: {
         fetchUserByExternalId: jest.fn().mockResolvedValue(user),

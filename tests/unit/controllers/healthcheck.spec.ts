@@ -1,6 +1,6 @@
 import request from 'supertest';
 import app from '../../../src/app';
-import { Config } from '../../../config/config';
+import { Config } from '../../../config/environment';
 import DaoFactory from '../../../src/daoFactory';
 import ModelFactory from '../../../src/modelFactory';
 
@@ -14,11 +14,7 @@ describe('Healthcheck controller', () => {
       const mockDaoFactory = {
         testConnection: jest.fn().mockResolvedValue(true),
       } as unknown as DaoFactory;
-      const mockApp = app(
-        mockConfig,
-        mockDaoFactory,
-        {} as unknown as ModelFactory
-      );
+      const mockApp = app(mockConfig, mockDaoFactory);
 
       const response = await request(mockApp).get('/healthcheck');
 
@@ -32,11 +28,7 @@ describe('Healthcheck controller', () => {
       const mockDaoFactory = {
         testConnection: jest.fn().mockResolvedValue(true),
       } as unknown as DaoFactory;
-      const mockApp = app(
-        mockConfig,
-        mockDaoFactory,
-        {} as unknown as ModelFactory
-      );
+      const mockApp = app(mockConfig, mockDaoFactory);
 
       const response = await request(mockApp).get('/healthcheck');
 
@@ -53,11 +45,7 @@ describe('Healthcheck controller', () => {
       const mockDaoFactory = {
         testConnection: jest.fn().mockResolvedValue(true),
       } as unknown as DaoFactory;
-      const mockApp = app(
-        mockConfig,
-        mockDaoFactory,
-        {} as unknown as ModelFactory
-      );
+      const mockApp = app(mockConfig, mockDaoFactory);
 
       const response = await request(mockApp).get('/healthcheck');
 
@@ -78,11 +66,7 @@ describe('Healthcheck controller', () => {
       const mockDaoFactory = {
         testConnection: jest.fn().mockResolvedValue(false),
       } as unknown as DaoFactory;
-      const mockApp = app(
-        mockConfig,
-        mockDaoFactory,
-        {} as unknown as ModelFactory
-      );
+      const mockApp = app(mockConfig, mockDaoFactory);
 
       const response = await request(mockApp).get('/healthcheck');
 

@@ -1,6 +1,12 @@
 import { Context } from '../app';
 import { UserRow } from '../daos/user';
 
+import * as jsonwebtoken from 'jsonwebtoken';
+
+type TokenData = {
+  id: string;
+};
+
 export default class UserModel {
   private ctx: Context;
 
@@ -42,5 +48,30 @@ export default class UserModel {
     if (!user) return null;
 
     return new UserModel(ctx, user);
+  }
+
+  async generateAuthToken(): Promise<string> {
+    const data: TokenData = {
+      id: this.externalId,
+    };
+    return jsonwebtoken.sign(data, this.ctx.config.jwtSecret);
+  }
+
+  static async fetchByToken(
+    ctx: Context,
+    token: string
+  ): Promise<UserModel | null> {
+    const tokenData = jsonwebtoken.verify(
+      token,
+      ctx.config.jwtSecret
+    ) as TokenData;
+    if (!tokenData) return null;
+
+    const userData = await ctx.daoFactory.user.fetchUserByExternalId(
+      tokenData.id
+    );
+    if (!userData) return null;
+
+    return new UserModel(ctx, userData);
   }
 }
