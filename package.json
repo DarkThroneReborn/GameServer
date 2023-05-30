@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon --exec ts-node src/server.ts",
+    "lint": "eslint .",
     "build": "tsc",
     "postbuild": "cp ecosystem.json package-lock.json dist/",
     "test": "jest",
@@ -25,8 +26,13 @@
     "@types/express": "^4.17.17",
     "@types/jest": "^29.5.0",
     "@types/supertest": "^2.0.12",
+    "@typescript-eslint/eslint-plugin": "^5.59.8",
+    "@typescript-eslint/parser": "^5.59.8",
+    "eslint": "^8.41.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "jest": "^29.5.0",
     "nodemon": "^2.0.22",
+    "prettier": "^2.8.8",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.0",
     "ts-node": "^10.9.1"

@@ -11,12 +11,12 @@ const config: Config = {
   serverPort: process.env.GAME_SERVER_PORT || '3000',
   environment: 'development',
   allowedOrigins: [],
-  version: pkg.version
+  version: pkg.version,
 };
 
 if (process.env.NODE_ENV === 'development') {
   config.allowedOrigins = [
-    'http://localhost:3000' // Locally running web-client
+    'http://localhost:3000', // Locally running web-client
   ];
 }
 

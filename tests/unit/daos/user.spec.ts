@@ -30,7 +30,9 @@ describe('Dao: User', () => {
   });
 });
 
-function _mockDatabase(returnValue: any): Knex {
+function _mockDatabase(
+  returnValue: { id: number; external_id: string } | null
+): Knex {
   return jest.fn().mockReturnValue({
     select: jest.fn().mockReturnThis(),
     where: jest.fn().mockReturnThis(),

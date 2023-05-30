@@ -13,7 +13,11 @@ export interface Context {
   modelFactory: ModelFactory;
 }
 
-export default (config: Config, daoFactory: DaoFactory, modelFactory: ModelFactory): Express => {
+export default (
+  config: Config,
+  daoFactory: DaoFactory,
+  modelFactory: ModelFactory
+): Express => {
   const app = express();
 
   app.use((req, res, next) => {
@@ -23,19 +27,21 @@ export default (config: Config, daoFactory: DaoFactory, modelFactory: ModelFacto
       requestId: requestId,
       config: config,
       daoFactory: daoFactory,
-      modelFactory: modelFactory
-    }
+      modelFactory: modelFactory,
+    };
 
     res.setHeader('X-Request-Id', requestId);
-    res.setHeader('X-Powered-By', `Dark Throne Reborn Game Server ${config.version}`);
+    res.setHeader(
+      'X-Powered-By',
+      `Dark Throne Reborn Game Server ${config.version}`
+    );
 
     next();
   });
-
 
   app.use(corsMiddleware(config.allowedOrigins));
 
   app.use(router);
 
   return app;
-}
+};

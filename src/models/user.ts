@@ -16,7 +16,7 @@ export default class UserModel {
   public offensiveStrength: number;
   public defensiveStrength: number;
   public goldPerTurn: number;
- 
+
   constructor(ctx: Context, userData: UserRow) {
     this.ctx = ctx;
 
@@ -34,7 +34,10 @@ export default class UserModel {
     this.goldPerTurn = userData.gold_per_turn;
   }
 
-  static async fetchUserByExternalId(ctx: Context, externalId: string): Promise<UserModel | null> {
+  static async fetchUserByExternalId(
+    ctx: Context,
+    externalId: string
+  ): Promise<UserModel | null> {
     const user = await ctx.daoFactory.user.fetchUserByExternalId(externalId);
     if (!user) return null;
 

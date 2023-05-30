@@ -1,5 +1,4 @@
-import { Knex } from "knex";
-
+import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.table('users', (table) => {
@@ -11,7 +10,6 @@ export async function up(knex: Knex): Promise<void> {
   });
 }
 
-
 export async function down(knex: Knex): Promise<void> {
   return knex.schema.table('users', (table) => {
     table.dropColumn('gold');
@@ -21,4 +19,3 @@ export async function down(knex: Knex): Promise<void> {
     table.dropColumn('gold_per_turn');
   });
 }
-

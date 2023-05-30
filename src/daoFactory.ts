@@ -14,7 +14,9 @@ export default class DaoFactory {
 
   async testConnection() {
     try {
-      const result: any = await this.database.raw('SELECT 1+1 AS result');
+      const result: { rows: { result: number }[] } = await this.database.raw(
+        'SELECT 1+1 AS result'
+      );
       return result.rows[0].result === 2 ? true : false;
     } catch (error) {
       console.error(error);

@@ -16,11 +16,9 @@ describe('Controller: User', () => {
       expect(mockResponse.json).toHaveBeenCalledWith({});
     });
     it('should return a 200 if the user exists', async () => {
-      const mockRequest = _mockRequest(
-        {
-          externalId: 'abc123',
-        } as UserModel
-      );
+      const mockRequest = _mockRequest({
+        externalId: 'abc123',
+      } as UserModel);
       const mockResponse = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn().mockReturnThis(),
@@ -48,4 +46,4 @@ const _mockRequest = (user: UserModel | null): Request => {
       },
     },
   } as unknown as Request;
-}
+};
