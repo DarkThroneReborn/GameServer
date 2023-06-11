@@ -40,10 +40,46 @@ describe('Model: User', () => {
       expect(user.createdAt).toEqual(mockUserData.created_at);
       expect(user.updatedAt).toEqual(mockUserData.updated_at);
       expect(user.gold).toEqual(mockUserData.gold);
-      expect(user.units).toEqual(mockUserData.units);
+      expect(user.units).toEqual(JSON.parse(mockUserData.units));
       expect(user.offensiveStrength).toEqual(mockUserData.offensive_strength);
       expect(user.defensiveStrength).toEqual(mockUserData.defensive_strength);
       expect(user.goldPerTurn).toEqual(mockUserData.gold_per_turn);
+    });
+  });
+  describe('get population', () => {
+    it('should return the total population of the user', () => {
+      const ctx = _mockContext(mockUserData);
+      const user = new UserModel(ctx, mockUserData);
+      expect(user.population).toEqual(0);
+    });
+    it('should return the total population of the user', () => {
+      const mockData = Object.assign({}, mockUserData);
+      mockData.units = JSON.stringify([
+        { type: 'CITIZEN', quantity: 10 },
+        { type: 'WORKER', quantity: 10 },
+        { type: 'SOLDIER', quantity: 10 },
+      ]);
+      const ctx = _mockContext(mockData);
+      const user = new UserModel(ctx, mockData);
+      expect(user.population).toEqual(30);
+    });
+  });
+  describe('get armySize', () => {
+    it('should return the total armySize of the user', () => {
+      const ctx = _mockContext(mockUserData);
+      const user = new UserModel(ctx, mockUserData);
+      expect(user.armySize).toEqual(0);
+    });
+    it('should return the total population of the user', () => {
+      const mockData = Object.assign({}, mockUserData);
+      mockData.units = JSON.stringify([
+        { type: 'CITIZEN', quantity: 10 },
+        { type: 'WORKER', quantity: 10 },
+        { type: 'SOLDIER', quantity: 10 },
+      ]);
+      const ctx = _mockContext(mockData);
+      const user = new UserModel(ctx, mockData);
+      expect(user.armySize).toEqual(10);
     });
   });
   describe('fetchUserByExternalId', () => {

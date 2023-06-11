@@ -2,6 +2,14 @@ import { Request, Response } from 'express';
 
 export type APIUserRecord = {
   id: string;
+  username: string;
+  population: number;
+  military: {
+    armySize: number;
+  };
+  economy: {
+    gold: number;
+  };
 };
 
 export async function fetchUserByExternalId(req: Request, res: Response) {
@@ -14,6 +22,14 @@ export async function fetchUserByExternalId(req: Request, res: Response) {
 
   const userRecord: APIUserRecord = {
     id: user.externalId,
+    username: user.username,
+    population: user.population,
+    military: {
+      armySize: user.armySize,
+    },
+    economy: {
+      gold: user.gold,
+    },
   };
 
   return res.status(200).json(userRecord);

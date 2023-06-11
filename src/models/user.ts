@@ -8,6 +8,11 @@ type TokenData = {
   id: string;
 };
 
+type Units = {
+  type: 'CITIZEN' | 'WORKER' | 'SOLDIER' | 'GUARD';
+  quantity: number;
+};
+
 export default class UserModel {
   private ctx: Context;
 
@@ -19,7 +24,7 @@ export default class UserModel {
   public createdAt: Date;
   public updatedAt: Date;
   public gold: number;
-  public units: string;
+  public units: Units[];
   public offensiveStrength: number;
   public defensiveStrength: number;
   public goldPerTurn: number;
@@ -35,10 +40,21 @@ export default class UserModel {
     this.createdAt = userData.created_at;
     this.updatedAt = userData.updated_at;
     this.gold = userData.gold;
-    this.units = userData.units;
+    this.units = userData.units ? JSON.parse(userData.units) : [];
     this.offensiveStrength = userData.offensive_strength;
     this.defensiveStrength = userData.defensive_strength;
     this.goldPerTurn = userData.gold_per_turn;
+  }
+
+  get population(): number {
+    return this.units.reduce((acc, unit) => acc + unit.quantity, 0);
+  }
+
+  get armySize(): number {
+    const miliatryUnits = this.units.filter(
+      (unit) => unit.type !== 'CITIZEN' && unit.type !== 'WORKER'
+    );
+    return miliatryUnits.reduce((acc, unit) => acc + unit.quantity, 0);
   }
 
   async comparePassword(password: string): Promise<boolean> {
@@ -51,6 +67,8 @@ export default class UserModel {
     };
     return jsonwebtoken.sign(data, this.ctx.config.jwtSecret);
   }
+
+  // STATIC METHODS
 
   static async fetchUserByExternalId(
     ctx: Context,

@@ -4,8 +4,8 @@ import * as jsonwebtoken from 'jsonwebtoken';
 import app from '../../../src/app';
 import { Config } from '../../../config/environment';
 import DaoFactory from '../../../src/daoFactory';
-import UserModel from '../../../src/models/user';
 import errors, { appErrorToResponseError } from '../../../src/errors';
+import { UserRow } from '../../../src/daos/user';
 
 describe('GET Current User', () => {
   it('should respond with a 401 if the user is not authenticated', async () => {
@@ -33,7 +33,8 @@ describe('GET Current User', () => {
     const mockUser = {
       id: '01H1Q5JR757MDVTRGKH8DMD4G9',
       email: 'test@example.com',
-    } as unknown as UserModel;
+      units: '[]',
+    } as unknown as UserRow;
 
     const mockDaoFactory = {
       user: {
